@@ -1,0 +1,122 @@
+---
+title: "GDP and Regime"
+author: "Cian Stryker"
+date: "5/13/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(readxl)
+library(gt)
+library(cowplot)
+library(png)
+library(scales)
+library(janitor)
+library(countrycode)
+library(tidyverse)
+```
+
+```{r GDP Cleaning}
+
+GDP <- read_csv("Data/GDP_World_Bank.csv", col_types = cols(
+  .default = col_double(),
+  `Country Name` = col_character(),
+  `Country Code` = col_character(),
+  `2019` = col_logical()
+)) 
+
+GDP <- GDP[, -c(2, 26)]
+
+GDP <- GDP %>%
+  pivot_longer(-`Country Name`,
+                names_to = "year",
+               values_to = "GDP") %>%
+  clean_names() 
+
+GDP$country_name <- countrycode(GDP$country_name, "country.name", "country.name")
+
+GDP$country_code = GDP$country_name
+
+GDP$country_code <- countrycode(GDP$country_code, "country.name", "iso2c")
+
+GDP$gdp <- format(format)
+
+```
+
+
+```{r Map of Central Asia}
+
+Central_Asia <- c("Kazakhstan", "Kyrgyzstan", "Tajikistan", "Turkmenistan", "Uzbekistan")
+
+Central_Asia <- map_data("world", region = Central_Asia)
+
+map.data <- Central_Asia %>%
+  group_by(region) %>%
+  summarise(long = mean(long), lat = mean(lat))
+
+colnames(Central_Asia)[colnames(Central_Asia) == 'region'] <- 'country_name'
+
+Central_Asia$country_name <- countrycode(Central_Asia$country_name, "country.name", "country.name")
+
+```
+
+
+
+```{r GDP CA Map}
+GDP_2018 <- GDP %>%
+  filter(year == 2018)
+
+GDP_Map <- left_join(Central_Asia, GDP_2018, by = c("country_name"))
+```
+
+```{r}
+
+ggplot(GDP_Map, aes( x = long, y = lat, group = group )) +
+  geom_polygon(aes(fill = gdp), color = "white") +
+  guides(fill = guide_legend(reverse = T,)) +
+  scale_fill_gradientn(limits = c(7e+09, 2e+11), colours =   
+       c('#461863','#404E88','#2A8A8C','#7FD157','#F9E53F'),
+       values = rescale(c(7e+09, 8.e+09, 4.08e+10, 5.05e+10, 1.79e+11)),
+       labels = c("7.5e+09", "4.1e+10", "5.0e+10", "1.8e+11"),
+       breaks = c(7e+09, 4.08e+10, 5.05e+10, 1.79e+11)) +
+  labs(fill = "GDP in USD",
+       title = 'GDP in Central Asia: 2018',
+       x = NULL,
+       y = NULL, 
+       caption = "Source: World Bank") +
+  theme(text = element_text(color = '#333333'),
+        plot.title = element_text(size = 12),
+        plot.subtitle = element_text(size = 10),
+        axis.ticks = element_blank(),
+        axis.text = element_blank(),
+        panel.grid = element_blank(),
+        plot.background = element_rect(fill = '#CCCCCC'),
+        legend.position = c(.91,.2),
+        legend.background = element_rect(fill = '#CCCCCC'),
+        legend.key = element_blank()
+        ) 
+
+nums <- c(7522947810, 8092836609, 40761142857, 50499921558, 179000000000)
+
+formatC(nums, format = "e", digits = 1 )
+
+```
+
+
+```{r Regime}
+
+polity <- read_excel("Data/Regime_PolityV.xls")
+
+polity <- polity[, -4]
+
+polity$country <- countrycode(polity$country, "country.name", "country.name")
+
+polity$country_code = polity$country
+
+polity$country_code <- countrycode(polity$country_code, "country.name", "iso2c")
+```
+
+
+
