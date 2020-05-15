@@ -136,7 +136,7 @@ plot1 <- ggplot(CA_RoLx, aes(x = country, y = score,  fill = country)) +
     color = "Country",
     title = "Rule of Law: 2018",
     subtitle = "Central Asia",
-    x = "Year",
+    x = "Country",
     y = "Index Score",
     caption = " "
   ) +
@@ -157,7 +157,7 @@ plot2 <- ggplot(CA_Gov, aes(x = country, y = score,  fill = country)) +
     color = "Country",
     title = "Government Effectivness: 2018",
     subtitle = "Central Asia",
-    x = "Year",
+    x = "Country",
     y = " ",
     caption = "Source: World Bank"
   ) +
@@ -185,7 +185,7 @@ plot1x <- ggplot(RoL_All, aes(x = country, y = score,  fill = country)) +
     color = "Country",
     title = "Rule of Law: 2018",
     subtitle = "Central Asia and Ecuador",
-    x = "Year",
+    x = "Country",
     y = "Index Score",
     caption = " "
   ) +
@@ -206,7 +206,7 @@ plot2x <- ggplot(Gov_All, aes(x = country, y = score,  fill = country)) +
     color = "Country",
     title = "Government Effectivness: 2018",
     subtitle = "Central Asia and Ecuador",
-    x = "Year",
+    x = "Country",
     y = " ",
     caption = "Source: World Bank"
   ) +

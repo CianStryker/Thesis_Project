@@ -22,7 +22,7 @@ setwd("~/Thesis_Project/Images")
 # Then I create a png file before I load my already 
 # created graph into that file.
 
-png(filename = "GDP_Map.png", width = 1300, height = 700)
+png(filename = "GDP_Map.png", width = 700, height = 400)
 plot(GDP_Map)
 
 ```
@@ -35,7 +35,7 @@ setwd("~/Thesis_Project/Images")
 # Then I create a png file before I load my already 
 # created graph into that file.
 
-png(filename = "FH_Map.png", width = 1300, height = 700)
+png(filename = "FH_Map.png", width = 700, height = 400)
 plot(FH_Map)
 
 ```
@@ -48,7 +48,7 @@ setwd("~/Thesis_Project/Images")
 # Then I create a png file before I load my already 
 # created graph into that file.
 
-png(filename = "GDP_Line_Graph.png", width = 1300, height = 700)
+png(filename = "GDP_Line_Graph.png", width = 700, height = 400)
 plot(GDP_Line_Graph)
 
 ```
@@ -61,7 +61,7 @@ setwd("~/Thesis_Project/Images")
 # Then I create a png file before I load my already 
 # created graph into that file.
 
-png(filename = "FH_Line_Graph.png", width = 1300, height = 700)
+png(filename = "FH_Line_Graph.png", width = 700, height = 400)
 plot(FH_Line_Graph)
 
 ```
@@ -74,7 +74,7 @@ setwd("~/Thesis_Project/Images")
 # Then I create a png file before I load my already 
 # created graph into that file.
 
-png(filename = "Governance_CA.png", width = 1300, height = 700)
+png(filename = "Governance_CA.png", width = 700, height = 400)
 plot(Governance_CA)
 
 ```
@@ -87,7 +87,7 @@ setwd("~/Thesis_Project/Images")
 # Then I create a png file before I load my already 
 # created graph into that file.
 
-png(filename = "Governance_CA_E.png", width = 1300, height = 700)
+png(filename = "Governance_CA_E.png", width = 700, height = 400)
 plot(Governance_CA_E)
 
 ```
@@ -100,7 +100,7 @@ setwd("~/Thesis_Project/Images")
 # Then I create a png file before I load my already 
 # created graph into that file.
 
-png(filename = "Gov_Kyrgyzstan.png", width = 1300, height = 700)
+png(filename = "Gov_Kyrgyzstan.png", width = 700, height = 400)
 plot(Gov_Kyrgyzstan)
 
 ```
@@ -113,7 +113,7 @@ setwd("~/Thesis_Project/Images")
 # Then I create a png file before I load my already 
 # created graph into that file.
 
-png(filename = "GDP_Kyrgyzstan.png", width = 1300, height = 700)
+png(filename = "GDP_Kyrgyzstan.png", width = 700, height = 400)
 plot(GDP_Kyrgyzstan)
 
 ```
@@ -126,7 +126,7 @@ setwd("~/Thesis_Project/Images")
 # Then I create a png file before I load my already 
 # created graph into that file.
 
-png(filename = "Gov_Kazakhstan.png", width = 1300, height = 700)
+png(filename = "Gov_Kazakhstan.png", width = 700, height = 400)
 plot(Gov_Kazakhstan)
 
 ```
@@ -139,7 +139,7 @@ setwd("~/Thesis_Project/Images")
 # Then I create a png file before I load my already 
 # created graph into that file.
 
-png(filename = "GDP_Kazakhstan.png", width = 1300, height = 700)
+png(filename = "GDP_Kazakhstan.png", width = 700, height = 400)
 plot(GDP_Kazakhstan)
 
 ```
@@ -152,7 +152,7 @@ setwd("~/Thesis_Project/Images")
 # Then I create a png file before I load my already 
 # created graph into that file.
 
-png(filename = "Gov_Tajikistan.png", width = 1300, height = 700)
+png(filename = "Gov_Tajikistan.png", width = 700, height = 400)
 plot(Gov_Tajikistan)
 
 ```
@@ -165,7 +165,7 @@ setwd("~/Thesis_Project/Images")
 # Then I create a png file before I load my already 
 # created graph into that file.
 
-png(filename = "GDP_Tajikistan.png", width = 1300, height = 700)
+png(filename = "GDP_Tajikistan.png", width = 700, height = 400)
 plot(GDP_Tajikistan)
 
 ```
@@ -178,7 +178,7 @@ setwd("~/Thesis_Project/Images")
 # Then I create a png file before I load my already 
 # created graph into that file.
 
-png(filename = "Gov_Uzbekistan.png", width = 1300, height = 700)
+png(filename = "Gov_Uzbekistan.png", width = 700, height = 400)
 plot(Gov_Uzbekistan)
 
 ```
@@ -191,7 +191,7 @@ setwd("~/Thesis_Project/Images")
 # Then I create a png file before I load my already 
 # created graph into that file.
 
-png(filename = "GDP_Uzbekistan.png", width = 1300, height = 700)
+png(filename = "GDP_Uzbekistan.png", width = 700, height = 400)
 plot(GDP_Uzbekistan)
 
 ```
@@ -204,7 +204,7 @@ setwd("~/Thesis_Project/Images")
 # Then I create a png file before I load my already 
 # created graph into that file.
 
-png(filename = "Gov_Ecuador.png", width = 1300, height = 700)
+png(filename = "Gov_Ecuador.png", width = 700, height = 400)
 plot(Gov_Ecuador)
 
 ```
@@ -217,7 +217,7 @@ setwd("~/Thesis_Project/Images")
 # Then I create a png file before I load my already 
 # created graph into that file.
 
-png(filename = "GDP_Ecuador.png", width = 1300, height = 700)
+png(filename = "GDP_Ecuador.png", width = 700, height = 400)
 plot(GDP_Ecuador)
 
 ```
