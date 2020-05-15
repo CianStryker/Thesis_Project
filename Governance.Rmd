@@ -169,8 +169,9 @@ plot2 <- ggplot(CA_Gov, aes(x = country, y = score,  fill = country)) +
 
 ```{r CA Governance Comparative Plot}
 
-plot_grid(plot1, plot2)
+Governance_CA <- plot_grid(plot1, plot2)
 ```
+
 ```{r Rule of Law Bar Chart CA + Ecuador Comparison}
 
 RoL_All <- RoL %>%
@@ -217,7 +218,7 @@ plot2x <- ggplot(Gov_All, aes(x = country, y = score,  fill = country)) +
 
 ```{r CA + Ecuador Governance Comparative Plot}
 
-plot_grid(plot1x, plot2x)
+Governance_CA_E <- plot_grid(plot1x, plot2x)
 ```
 
 ```{r Governance Data}
@@ -245,14 +246,15 @@ Kyrgyzstan_Gov <- Governance_Clean %>%
   filter(country %in% c("Kyrgyzstan")) %>%
   filter(year >= 2002)
 
-ggplot(Kyrgyzstan_Gov, aes(x = year, y = score, group = index)) +
+Gov_Kyrgyzstan <- ggplot(Kyrgyzstan_Gov, aes(x = year, y = score, group = index)) +
   geom_line(aes(linetype= "dash", color = index)) +
   geom_point(aes(color = index)) +
   labs(
     color = "Index",
     title = "Governance in Kyrgyzstan",
     x = "Year",
-    y = "Index Score"
+    y = "Index Score",
+    caption = "Source: World Bank and Freedom House"
   ) +
   expand_limits(y = 100, x = "2020") +
   scale_x_discrete(breaks = c(2002, 2004, 2006, 2008, 2010, 2012, 2014, 2016, 2018, 2020)) +
@@ -267,7 +269,7 @@ ggplot(Kyrgyzstan_Gov, aes(x = year, y = score, group = index)) +
 Kyrgyzstan_GDP <- GDP %>%
   filter(country %in% c("Kyrgyzstan")) 
 
-ggplot(Kyrgyzstan_GDP, aes(x = year, y = gdp, color = "red")) +
+GDP_Kyrgyzstan <-ggplot(Kyrgyzstan_GDP, aes(x = year, y = gdp, color = "red")) +
   geom_point() +
   geom_line() +
   labs(
@@ -287,14 +289,15 @@ Kazakhstan_Gov <- Governance_Clean %>%
   filter(year >= 2002)
 
 
-ggplot(Kazakhstan_Gov, aes(x = year, y = score, group = index)) +
+Gov_Kazakhstan <-ggplot(Kazakhstan_Gov, aes(x = year, y = score, group = index)) +
   geom_line(aes(linetype= "dash", color = index)) +
   geom_point(aes(color = index)) +
   labs(
     color = "Index",
     title = "Governance in Kazakhstan",
     x = "Year",
-    y = "Index Score"
+    y = "Index Score",
+    caption = "Source: World Bank and Freedom House"
   ) +
   expand_limits(y = 100, x = "2020") +
   scale_x_discrete(breaks = c(2002, 2004, 2006, 2008, 2010, 2012, 2014, 2016, 2018, 2020)) +
@@ -309,7 +312,7 @@ ggplot(Kazakhstan_Gov, aes(x = year, y = score, group = index)) +
 Kazakhstan_GDP <- GDP %>%
   filter(country %in% c("Kazakhstan")) 
 
-ggplot(Kazakhstan_GDP, aes(x = year, y = gdp, color = "red")) +
+GDP_Kazakhstan <- ggplot(Kazakhstan_GDP, aes(x = year, y = gdp, color = "red")) +
   geom_point() +
   geom_line() +
   labs(
@@ -329,14 +332,15 @@ Tajikistan_Gov <- Governance_Clean %>%
   filter(year >= 2002)
 
 
-ggplot(Tajikistan_Gov, aes(x = year, y = score, group = index)) +
+Gov_Tajikistan <-ggplot(Tajikistan_Gov, aes(x = year, y = score, group = index)) +
   geom_line(aes(linetype= "dash", color = index)) +
   geom_point(aes(color = index)) +
   labs(
     color = "Index",
     title = "Governance in Tajikistan",
     x = "Year",
-    y = "Index Score"
+    y = "Index Score",
+    caption = "Source: World Bank and Freedom House"
   ) +
   expand_limits(y = 100, x = "2020") +
   scale_x_discrete(breaks = c(2002, 2004, 2006, 2008, 2010, 2012, 2014, 2016, 2018, 2020)) +
@@ -351,7 +355,7 @@ ggplot(Tajikistan_Gov, aes(x = year, y = score, group = index)) +
 Tajikistan_GDP <- GDP %>%
   filter(country %in% c("Tajikistan")) 
 
-ggplot(Tajikistan_GDP, aes(x = year, y = gdp, color = "red")) +
+GDP_Tajikistan <- ggplot(Tajikistan_GDP, aes(x = year, y = gdp, color = "red")) +
   geom_point() +
   geom_line() +
   labs(
@@ -372,14 +376,15 @@ Uzbekistan_Gov <- Governance_Clean %>%
   filter(year >= 2002)
 
 
-ggplot(Uzbekistan_Gov, aes(x = year, y = score, group = index)) +
+Gov_Uzbekistan <- ggplot(Uzbekistan_Gov, aes(x = year, y = score, group = index)) +
   geom_line(aes(linetype= "dash", color = index)) +
   geom_point(aes(color = index)) +
   labs(
     color = "Index",
-    title = "Governance in Uzbekistan",
+    title = "Governance in Uzbekistan and Freedom House",
     x = "Year",
-    y = "Index Score"
+    y = "Index Score",
+    caption = "Source: World Bank"
   ) +
   expand_limits(y = 100, x = "2020") +
   scale_x_discrete(breaks = c(2002, 2004, 2006, 2008, 2010, 2012, 2014, 2016, 2018, 2020)) +
@@ -394,7 +399,7 @@ ggplot(Uzbekistan_Gov, aes(x = year, y = score, group = index)) +
 Uzbekistan_GDP <- GDP %>%
   filter(country %in% c("Uzbekistan")) 
 
-ggplot(Uzbekistan_GDP, aes(x = year, y = gdp, color = "red")) +
+GDP_Uzbekistan <- ggplot(Uzbekistan_GDP, aes(x = year, y = gdp, color = "red")) +
   geom_point() +
   geom_line() +
   labs(
@@ -415,14 +420,15 @@ Ecuador_Gov <- Governance_Clean %>%
   filter(year >= 2002)
 
 
-ggplot(Ecuador_Gov, aes(x = year, y = score, group = index)) +
+Gov_Ecuador <- ggplot(Ecuador_Gov, aes(x = year, y = score, group = index)) +
   geom_line(aes(linetype= "dash", color = index)) +
   geom_point(aes(color = index)) +
   labs(
     color = "Index",
     title = "Governance in Ecuador",
     x = "Year",
-    y = "Index Score"
+    y = "Index Score",
+    caption = "Source: World Bank and Freedom House"
   ) +
   expand_limits(y = 100, x = "2020") +
   scale_x_discrete(breaks = c(2002, 2004, 2006, 2008, 2010, 2012, 2014, 2016, 2018, 2020)) +
@@ -437,7 +443,7 @@ ggplot(Ecuador_Gov, aes(x = year, y = score, group = index)) +
 Ecuador_GDP <- GDP %>%
   filter(country %in% c("Ecuador")) 
 
-ggplot(Ecuador_GDP, aes(x = year, y = gdp, color = "red")) +
+GDP_Ecuador <- ggplot(Ecuador_GDP, aes(x = year, y = gdp, color = "red")) +
   geom_point() +
   geom_line() +
   labs(

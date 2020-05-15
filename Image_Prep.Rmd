@@ -1,0 +1,223 @@
+---
+title: "Image Prep"
+author: "Cian Stryker"
+date: "5/15/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+
+library(png)
+library(readr)
+library(fs)
+library(tidyverse)
+```
+
+```{r, Image 1, warning=FALSE, include=FALSE}
+
+
+setwd("~/Thesis_Project/Images")
+
+# Then I create a png file before I load my already 
+# created graph into that file.
+
+png(filename = "GDP_Map.png", width = 1300, height = 700)
+plot(GDP_Map)
+
+```
+
+```{r, Image 2, warning=FALSE, include=FALSE}
+
+
+setwd("~/Thesis_Project/Images")
+
+# Then I create a png file before I load my already 
+# created graph into that file.
+
+png(filename = "FH_Map.png", width = 1300, height = 700)
+plot(FH_Map)
+
+```
+
+```{r, Image 3, warning=FALSE, include=FALSE}
+
+
+setwd("~/Thesis_Project/Images")
+
+# Then I create a png file before I load my already 
+# created graph into that file.
+
+png(filename = "GDP_Line_Graph.png", width = 1300, height = 700)
+plot(GDP_Line_Graph)
+
+```
+
+```{r, Image 4, warning=FALSE, include=FALSE}
+
+
+setwd("~/Thesis_Project/Images")
+
+# Then I create a png file before I load my already 
+# created graph into that file.
+
+png(filename = "FH_Line_Graph.png", width = 1300, height = 700)
+plot(FH_Line_Graph)
+
+```
+
+```{r, Image 5, warning=FALSE, include=FALSE}
+
+
+setwd("~/Thesis_Project/Images")
+
+# Then I create a png file before I load my already 
+# created graph into that file.
+
+png(filename = "Governance_CA.png", width = 1300, height = 700)
+plot(Governance_CA)
+
+```
+
+```{r, Image 6, warning=FALSE, include=FALSE}
+
+
+setwd("~/Thesis_Project/Images")
+
+# Then I create a png file before I load my already 
+# created graph into that file.
+
+png(filename = "Governance_CA_E.png", width = 1300, height = 700)
+plot(Governance_CA_E)
+
+```
+
+```{r, Image 7, warning=FALSE, include=FALSE}
+
+
+setwd("~/Thesis_Project/Images")
+
+# Then I create a png file before I load my already 
+# created graph into that file.
+
+png(filename = "Gov_Kyrgyzstan.png", width = 1300, height = 700)
+plot(Gov_Kyrgyzstan)
+
+```
+
+```{r, Image 8, warning=FALSE, include=FALSE}
+
+
+setwd("~/Thesis_Project/Images")
+
+# Then I create a png file before I load my already 
+# created graph into that file.
+
+png(filename = "GDP_Kyrgyzstan.png", width = 1300, height = 700)
+plot(GDP_Kyrgyzstan)
+
+```
+
+```{r, Image 9, warning=FALSE, include=FALSE}
+
+
+setwd("~/Thesis_Project/Images")
+
+# Then I create a png file before I load my already 
+# created graph into that file.
+
+png(filename = "Gov_Kazakhstan.png", width = 1300, height = 700)
+plot(Gov_Kazakhstan)
+
+```
+
+```{r, Image 10, warning=FALSE, include=FALSE}
+
+
+setwd("~/Thesis_Project/Images")
+
+# Then I create a png file before I load my already 
+# created graph into that file.
+
+png(filename = "GDP_Kazakhstan.png", width = 1300, height = 700)
+plot(GDP_Kazakhstan)
+
+```
+
+```{r, Image 11, warning=FALSE, include=FALSE}
+
+
+setwd("~/Thesis_Project/Images")
+
+# Then I create a png file before I load my already 
+# created graph into that file.
+
+png(filename = "Gov_Tajikistan.png", width = 1300, height = 700)
+plot(Gov_Tajikistan)
+
+```
+
+```{r, Image 12, warning=FALSE, include=FALSE}
+
+
+setwd("~/Thesis_Project/Images")
+
+# Then I create a png file before I load my already 
+# created graph into that file.
+
+png(filename = "GDP_Tajikistan.png", width = 1300, height = 700)
+plot(GDP_Tajikistan)
+
+```
+
+```{r, Image 13, warning=FALSE, include=FALSE}
+
+
+setwd("~/Thesis_Project/Images")
+
+# Then I create a png file before I load my already 
+# created graph into that file.
+
+png(filename = "Gov_Uzbekistan.png", width = 1300, height = 700)
+plot(Gov_Uzbekistan)
+
+```
+
+```{r, Image 14, warning=FALSE, include=FALSE}
+
+
+setwd("~/Thesis_Project/Images")
+
+# Then I create a png file before I load my already 
+# created graph into that file.
+
+png(filename = "GDP_Uzbekistan.png", width = 1300, height = 700)
+plot(GDP_Uzbekistan)
+
+```
+
+```{r, Image 15, warning=FALSE, include=FALSE}
+
+
+setwd("~/Thesis_Project/Images")
+
+# Then I create a png file before I load my already 
+# created graph into that file.
+
+png(filename = "Gov_Ecuador.png", width = 1300, height = 700)
+plot(Gov_Ecuador)
+
+```
+
+```{r, Image 16, warning=FALSE, include=FALSE}
+
+
+setwd("~/Thesis_Project/Images")
+
+# Then I create a png file before I load my already 
+# created graph into that file.
+
+png(filename = "GDP_Ecuador.png", width = 1300, height = 700)
+plot(GDP_Ecuador)
+
+```

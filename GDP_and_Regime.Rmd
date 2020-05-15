@@ -93,7 +93,7 @@ GDP_Map <- left_join(Central_Asia, GDP_2018, by = c("country_name"))
 
 ```{r GDP CA Comparative Map}
 
-ggplot(GDP_Map, aes( x = long, y = lat, group = group )) +
+GDP_Map <- ggplot(GDP_Map, aes( x = long, y = lat, group = group )) +
   geom_polygon(aes(fill = gdp), color = "white") +
   guides(fill = guide_legend(reverse = T,)) +
   scale_fill_gradientn(limits = c(7e+09, 2e+11), colours =   
@@ -130,7 +130,7 @@ Regime_Map <- left_join(Central_Asia, FH_2020, by = c("country_name"))
 
 ```{r}
 
-ggplot(Regime_Map, aes( x = long, y = lat, group = group )) +
+FH_Map <- ggplot(Regime_Map, aes( x = long, y = lat, group = group )) +
   geom_polygon(aes(fill = total), color = "white") +
   guides(fill = guide_legend(reverse = TRUE)) +
   scale_fill_viridis_c(option = "C", limits = c(0, 100), labels = c("Not Free", " ","Partially Free", " ",  "Free"), breaks = c(0, 25, 50, 75, 100)) +
@@ -159,7 +159,7 @@ ggplot(Regime_Map, aes( x = long, y = lat, group = group )) +
 GDP_All <- GDP %>%
   filter(country_name %in% c("Ecuador", "Kazakhstan", "Kyrgyzstan", "Tajikistan", "Turkmenistan", "Uzbekistan"))
 
-ggplot(GDP_All, aes(x = year, y = gdp, group = country_name)) +
+GDP_Line_Graph <- ggplot(GDP_All, aes(x = year, y = gdp, group = country_name)) +
   geom_line(aes(linetype= "dash", color = country_name)) +
   geom_point(aes(color = country_name)) +
   labs(
@@ -179,7 +179,7 @@ ggplot(GDP_All, aes(x = year, y = gdp, group = country_name)) +
 FH_All <- FH_Clean %>%
   filter(country_name %in% c("Ecuador", "Kazakhstan", "Kyrgyzstan", "Tajikistan", "Turkmenistan", "Uzbekistan"))
 
-ggplot(FH_All, aes(x = year, y = total, group = country_name)) +
+FH_Line_Graph <- ggplot(FH_All, aes(x = year, y = total, group = country_name)) +
   geom_line(aes(linetype= "dash", color = country_name)) +
   geom_point(aes(color = country_name)) +
   labs(
