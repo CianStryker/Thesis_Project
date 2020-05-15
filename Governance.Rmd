@@ -1,0 +1,232 @@
+---
+title: "Governance"
+author: "Cian Stryker"
+date: "5/13/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(readxl)
+library(gt)
+library(cowplot)
+library(png)
+library(countrycode)
+library(tidyverse)
+```
+
+
+```{r GDP Cleaning}
+
+GDP <- read_csv("Data/GDP_World_Bank.csv", col_types = cols(
+  .default = col_double(),
+  `Country Name` = col_character(),
+  `Country Code` = col_character(),
+  `2019` = col_logical()
+)) 
+
+GDP <- GDP[, -c(2, 26)]
+
+GDP <- GDP %>%
+  pivot_longer(-`Country Name`,
+                names_to = "year",
+               values_to = "GDP") %>%
+  clean_names() 
+
+GDP$country <- countrycode(GDP$country_name, "country.name", "country.name")
+
+GDP$country_code = GDP$country
+
+GDP$country_code <- countrycode(GDP$country_code, "country.name", "iso2c")
+
+GDP <- GDP[, -1]
+
+GDP<- GDP[c(3, 4, 1, 2)]
+
+GDP <- GDP %>%
+  mutate(year = as.integer(as.character(year)))
+```
+
+```{r Rule of Law}
+
+RoL <- read_excel("Data/Rule_of_Law_World_Bank.xlsx")
+
+RoL <- RoL[, -2]
+
+RoL <- RoL %>%
+  pivot_longer(-"Country/Territory",
+               names_to = "year",
+               values_to = "score"
+                ) 
+
+RoL$country = RoL$`Country/Territory`
+
+RoL <- RoL[, -1]
+
+RoL$country <- countrycode(RoL$country, "country.name", "country.name")
+
+RoL$country_code = RoL$country
+
+RoL$country_code <- countrycode(RoL$country_code, "country.name", "iso2c")
+
+RoL <- RoL[c(3, 4, 1, 2)]
+```
+
+```{r Gov Effectivness}
+
+Gov <- read_excel("Data/Government_Effectivness_World_Bank.xlsx")
+
+Gov <- Gov[, -2]
+
+Gov <- Gov %>%
+  pivot_longer(-"Country/Territory",
+               names_to = "year",
+               values_to = "score"
+                ) 
+
+Gov$country = Gov$`Country/Territory`
+
+Gov <- Gov[, -1]
+
+Gov$country <- countrycode(Gov$country, "country.name", "country.name")
+
+Gov$country_code = Gov$country
+
+Gov$country_code <- countrycode(Gov$country_code, "country.name", "iso2c")
+
+Gov <- Gov[c(3, 4, 1, 2)]
+```
+
+```{r Rule of Law Bar Chart}
+
+CA_RoLx <- RoL %>%
+  filter(country %in% c("Kazakhstan", "Kyrgyzstan", "Tajikistan", "Turkmenistan", "Uzbekistan")) %>%
+  filter(year == 2018)
+
+plot1 <- ggplot(CA_RoLx, aes(x = country, y = score,  fill = country)) +
+  geom_col() +
+  guides(fill = FALSE) +
+  labs(
+    color = "Country",
+    title = "Rule of Law: 2018",
+    x = "Year",
+    y = "Index Score"
+  ) +
+  expand_limits(y = 100) +
+  theme(axis.text.x=element_text(angle = 60, hjust = 1))
+```
+
+
+```{r Gov Effectivness Bar Chart}
+
+CA_Gov <- Gov %>%
+  filter(country %in% c("Kazakhstan", "Kyrgyzstan", "Tajikistan", "Turkmenistan", "Uzbekistan")) %>%
+  filter(year == 2018)
+
+plot2 <- ggplot(CA_Gov, aes(x = country, y = score,  fill = country)) +
+  geom_col() +
+  guides(fill = FALSE) +
+  labs(
+    color = "Country",
+    title = "Government Effectivness: 2018",
+    x = "Year",
+    y = " ",
+    caption = "Source: World Bank"
+  ) +
+  expand_limits(y = 100) +
+  theme(axis.text.x=element_text(angle = 60, hjust = 1))
+
+``` 
+
+
+```{r}
+plot_grid(plot1, plot2)
+```
+
+```{r Regime, warning = FALSE}
+
+Freedom_House <- read_excel("Data/Freedom_House.xlsx")
+
+FH <- Freedom_House
+FH$year <- FH$Edition
+
+FH$country <- countrycode(FH$`Country/Territory`, "country.name", "country.name")
+
+FH$country_code = FH$country
+
+FH$country_code <- countrycode(FH$country_code, "country.name", "iso2c")
+
+FH <- FH[, -c(1,2, 3)]
+
+FH<- FH[c(3, 4, 2, 1)]
+
+FH_Cleanx <- FH %>%
+  drop_na() %>%
+  clean_names() %>%
+  filter(country %in% c("Ecuador", "Kazakhstan", "Kyrgyzstan", "Tajikistan", "Turkmenistan", "Uzbekistan")) %>%
+  mutate(year = as.character(year))
+
+```
+
+```{r Governance Data}
+
+Governance <- left_join(RoL, Gov, by = c("country", "year", "country_code"))
+
+Governance$roL <- Governance$score.x
+Governance$effect <- Governance$score.y
+
+Governance <- Governance[, c(-4, -5)]
+
+maybe <- full_join(FH_Cleanx, Governance, by = c("country", "year", "country_code"))
+
+
+Governance_Clean <- maybe %>%
+  pivot_longer(-c("country", "country_code", "year"),
+               names_to = "index",
+               values_to = "score"
+                )
+```
+
+```{r Governance Kyrgyzstan, warning=FALSE}
+
+Kyrgyzstan_Gov <- Governance_Clean %>%
+  filter(country %in% c("Kyrgyzstan")) %>%
+  filter(year >= 2002)
+
+
+ggplot(Kyrgyzstan_Gov, aes(x = year, y = score, group = index)) +
+  geom_line(aes(linetype= "dash", color = index)) +
+  geom_point(aes(color = index)) +
+  labs(
+    color = "Index",
+    title = "Governance in Kyrgyzstan",
+    x = "Year",
+    y = "Index Score"
+  ) +
+  expand_limits(y = 100, x = "2020") +
+  scale_x_discrete(breaks = c(2002, 2004, 2006, 2008, 2010, 2012, 2014, 2016, 2018, 2020)) +
+  scale_y_continuous(breaks = c(0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100)) +
+  guides(linetype = FALSE) +
+  scale_color_hue(labels = c("Government Effectivness", "Rule of Law", "Freedom House Index"))
+```
+
+
+```{r}
+
+Kyrgyzstan_GDP <- GDP %>%
+  filter(country %in% c("Kyrgyzstan")) 
+
+ggplot(Kyrgyzstan_GDP, aes(x = year, y = gdp, color = "red")) +
+  geom_point() +
+  geom_line() +
+  labs(
+    title = "Kyryzstan's Economic Climate",
+    x = "Year",
+    y = "GDP"
+  ) +
+  scale_x_continuous(breaks = c(1996, 1998, 2000, 2002, 2004, 2006, 2008, 2010, 2012, 2014, 2016, 2018)) +
+  guides(linetype = FALSE, color = FALSE) 
+```
+
+

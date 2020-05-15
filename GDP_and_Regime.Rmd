@@ -41,7 +41,7 @@ GDP$country_code = GDP$country_name
 
 GDP$country_code <- countrycode(GDP$country_code, "country.name", "iso2c")
 
-GDP$gdp <- format(format)
+GDP<- GDP[c(1, 4, 2, 3)]
 
 ```
 
@@ -73,7 +73,7 @@ GDP_Map <- left_join(Central_Asia, GDP_2018, by = c("country_name"))
 
 ```{r}
 
-ggplot(GDP_Map, aes( x = long, y = lat, group = group )) +
+Map1 <- ggplot(GDP_Map, aes( x = long, y = lat, group = group )) +
   geom_polygon(aes(fill = gdp), color = "white") +
   guides(fill = guide_legend(reverse = T,)) +
   scale_fill_gradientn(limits = c(7e+09, 2e+11), colours =   
@@ -98,25 +98,67 @@ ggplot(GDP_Map, aes( x = long, y = lat, group = group )) +
         legend.key = element_blank()
         ) 
 
-nums <- c(7522947810, 8092836609, 40761142857, 50499921558, 179000000000)
+```
 
-formatC(nums, format = "e", digits = 1 )
+
+```{r Regime, warning = FALSE}
+
+Freedom_House <- read_excel("Data/Freedom_House.xlsx")
+
+FH <- Freedom_House
+FH$year <- FH$Edition
+
+FH$country_name <- countrycode(FH$`Country/Territory`, "country.name", "country.name")
+
+FH$country_code = FH$country_name
+
+FH$country_code <- countrycode(FH$country_code, "country.name", "iso2c")
+
+FH <- FH[, -c(1,2, 3)]
+
+FH<- FH[c(3, 4, 2, 1)]
+
+FH_Clean <- FH %>%
+  drop_na() %>%
+  clean_names() %>%
+  filter(country_name %in% c("Ecuador", "Kazakhstan", "Kyrgyzstan", "Tajikistan", "Turkmenistan", "Uzbekistan"))
 
 ```
 
 
-```{r Regime}
+```{r Regime CA Map}
 
-polity <- read_excel("Data/Regime_PolityV.xls")
+FH_2020<- FH_Clean %>%
+  filter(year == 2020)
 
-polity <- polity[, -4]
-
-polity$country <- countrycode(polity$country, "country.name", "country.name")
-
-polity$country_code = polity$country
-
-polity$country_code <- countrycode(polity$country_code, "country.name", "iso2c")
+Regime_Map <- left_join(Central_Asia, FH_2020, by = c("country_name"))
 ```
+
+```{r}
+
+ggplot(Regime_Map, aes( x = long, y = lat, group = group )) +
+  geom_polygon(aes(fill = total), color = "white") +
+  guides(fill = guide_legend(reverse = TRUE)) +
+  scale_fill_viridis_c(option = "C", limits = c(0, 100), labels = c("Not Free", " ","Partially Free", " ",  "Free"), breaks = c(0, 25, 50, 75, 100)) +
+  labs(fill = "Index",
+       title = 'Freedom House Scores in Central Asia: 2020',
+       x = NULL,
+       y = NULL,
+       caption = "Source: Freedom House") +
+  theme(text = element_text(color = '#333333'),
+        plot.title = element_text(size = 12),
+        plot.subtitle = element_text(size = 10),
+        axis.ticks = element_blank(),
+        axis.text = element_blank(),
+        panel.grid = element_blank(),
+        plot.background = element_rect(fill = '#CCCCCC'),
+        legend.position = c(.9,.24),
+        legend.background = element_rect(fill = '#CCCCCC'),
+        legend.key = element_blank()
+        ) 
+
+```
+
 
 
 
