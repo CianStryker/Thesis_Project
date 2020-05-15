@@ -6,11 +6,12 @@ output: html_document
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = FALSE)
 
 library(readxl)
 library(gt)
 library(cowplot)
+library(janitor)
 library(png)
 library(countrycode)
 library(tidyverse)
@@ -98,52 +99,6 @@ Gov$country_code <- countrycode(Gov$country_code, "country.name", "iso2c")
 Gov <- Gov[c(3, 4, 1, 2)]
 ```
 
-```{r Rule of Law Bar Chart}
-
-CA_RoLx <- RoL %>%
-  filter(country %in% c("Kazakhstan", "Kyrgyzstan", "Tajikistan", "Turkmenistan", "Uzbekistan")) %>%
-  filter(year == 2018)
-
-plot1 <- ggplot(CA_RoLx, aes(x = country, y = score,  fill = country)) +
-  geom_col() +
-  guides(fill = FALSE) +
-  labs(
-    color = "Country",
-    title = "Rule of Law: 2018",
-    x = "Year",
-    y = "Index Score"
-  ) +
-  expand_limits(y = 100) +
-  theme(axis.text.x=element_text(angle = 60, hjust = 1))
-```
-
-
-```{r Gov Effectivness Bar Chart}
-
-CA_Gov <- Gov %>%
-  filter(country %in% c("Kazakhstan", "Kyrgyzstan", "Tajikistan", "Turkmenistan", "Uzbekistan")) %>%
-  filter(year == 2018)
-
-plot2 <- ggplot(CA_Gov, aes(x = country, y = score,  fill = country)) +
-  geom_col() +
-  guides(fill = FALSE) +
-  labs(
-    color = "Country",
-    title = "Government Effectivness: 2018",
-    x = "Year",
-    y = " ",
-    caption = "Source: World Bank"
-  ) +
-  expand_limits(y = 100) +
-  theme(axis.text.x=element_text(angle = 60, hjust = 1))
-
-``` 
-
-
-```{r}
-plot_grid(plot1, plot2)
-```
-
 ```{r Regime, warning = FALSE}
 
 Freedom_House <- read_excel("Data/Freedom_House.xlsx")
@@ -166,7 +121,103 @@ FH_Cleanx <- FH %>%
   clean_names() %>%
   filter(country %in% c("Ecuador", "Kazakhstan", "Kyrgyzstan", "Tajikistan", "Turkmenistan", "Uzbekistan")) %>%
   mutate(year = as.character(year))
+```
 
+```{r Rule of Law Bar Chart CA Comparison}
+
+CA_RoLx <- RoL %>%
+  filter(country %in% c("Kazakhstan", "Kyrgyzstan", "Tajikistan", "Turkmenistan", "Uzbekistan")) %>%
+  filter(year == 2018)
+
+plot1 <- ggplot(CA_RoLx, aes(x = country, y = score,  fill = country)) +
+  geom_col() +
+  guides(fill = FALSE) +
+  labs(
+    color = "Country",
+    title = "Rule of Law: 2018",
+    subtitle = "Central Asia",
+    x = "Year",
+    y = "Index Score",
+    caption = " "
+  ) +
+  expand_limits(y = 100) +
+  theme(axis.text.x=element_text(angle = 60, hjust = 1))
+```
+
+```{r Gov Effectivness CA Comparison}
+
+CA_Gov <- Gov %>%
+  filter(country %in% c("Kazakhstan", "Kyrgyzstan", "Tajikistan", "Turkmenistan", "Uzbekistan")) %>%
+  filter(year == 2018)
+
+plot2 <- ggplot(CA_Gov, aes(x = country, y = score,  fill = country)) +
+  geom_col() +
+  guides(fill = FALSE) +
+  labs(
+    color = "Country",
+    title = "Government Effectivness: 2018",
+    subtitle = "Central Asia",
+    x = "Year",
+    y = " ",
+    caption = "Source: World Bank"
+  ) +
+  expand_limits(y = 100) +
+  theme(axis.text.x=element_text(angle = 60, hjust = 1))
+
+``` 
+
+
+```{r CA Governance Comparative Plot}
+
+plot_grid(plot1, plot2)
+```
+```{r Rule of Law Bar Chart CA + Ecuador Comparison}
+
+RoL_All <- RoL %>%
+  filter(country %in% c("Ecuador", "Kazakhstan", "Kyrgyzstan", "Tajikistan", "Turkmenistan", "Uzbekistan")) %>%
+  filter(year == 2018)
+
+plot1x <- ggplot(RoL_All, aes(x = country, y = score,  fill = country)) +
+  geom_col() +
+  guides(fill = FALSE) +
+  labs(
+    color = "Country",
+    title = "Rule of Law: 2018",
+    subtitle = "Central Asia and Ecuador",
+    x = "Year",
+    y = "Index Score",
+    caption = " "
+  ) +
+  expand_limits(y = 100) +
+  theme(axis.text.x=element_text(angle = 60, hjust = 1))
+```
+
+```{r Gov Effectivness CA + Ecuador Comparison}
+
+Gov_All <- Gov %>%
+  filter(country %in% c("Ecuador", "Kazakhstan", "Kyrgyzstan", "Tajikistan", "Turkmenistan", "Uzbekistan")) %>%
+  filter(year == 2018)
+
+plot2x <- ggplot(Gov_All, aes(x = country, y = score,  fill = country)) +
+  geom_col() +
+  guides(fill = FALSE) +
+  labs(
+    color = "Country",
+    title = "Government Effectivness: 2018",
+    subtitle = "Central Asia and Ecuador",
+    x = "Year",
+    y = " ",
+    caption = "Source: World Bank"
+  ) +
+  expand_limits(y = 100) +
+  theme(axis.text.x=element_text(angle = 60, hjust = 1))
+
+``` 
+
+
+```{r CA + Ecuador Governance Comparative Plot}
+
+plot_grid(plot1x, plot2x)
 ```
 
 ```{r Governance Data}
@@ -194,7 +245,6 @@ Kyrgyzstan_Gov <- Governance_Clean %>%
   filter(country %in% c("Kyrgyzstan")) %>%
   filter(year >= 2002)
 
-
 ggplot(Kyrgyzstan_Gov, aes(x = year, y = score, group = index)) +
   geom_line(aes(linetype= "dash", color = index)) +
   geom_point(aes(color = index)) +
@@ -212,7 +262,7 @@ ggplot(Kyrgyzstan_Gov, aes(x = year, y = score, group = index)) +
 ```
 
 
-```{r}
+```{r GDP Kyrgyzstan}
 
 Kyrgyzstan_GDP <- GDP %>%
   filter(country %in% c("Kyrgyzstan")) 
@@ -223,10 +273,179 @@ ggplot(Kyrgyzstan_GDP, aes(x = year, y = gdp, color = "red")) +
   labs(
     title = "Kyryzstan's Economic Climate",
     x = "Year",
-    y = "GDP"
+    y = "GDP in USD",
+    caption = "Source: World Bank"
+  ) +
+  scale_x_continuous(breaks = c(1996, 1998, 2000, 2002, 2004, 2006, 2008, 2010, 2012, 2014, 2016, 2018)) +
+  guides(linetype = FALSE, color = FALSE) 
+```
+
+```{r Governance Kazakhstan, warning=FALSE}
+
+Kazakhstan_Gov <- Governance_Clean %>%
+  filter(country %in% c("Kazakhstan")) %>%
+  filter(year >= 2002)
+
+
+ggplot(Kazakhstan_Gov, aes(x = year, y = score, group = index)) +
+  geom_line(aes(linetype= "dash", color = index)) +
+  geom_point(aes(color = index)) +
+  labs(
+    color = "Index",
+    title = "Governance in Kazakhstan",
+    x = "Year",
+    y = "Index Score"
+  ) +
+  expand_limits(y = 100, x = "2020") +
+  scale_x_discrete(breaks = c(2002, 2004, 2006, 2008, 2010, 2012, 2014, 2016, 2018, 2020)) +
+  scale_y_continuous(breaks = c(0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100)) +
+  guides(linetype = FALSE) +
+  scale_color_hue(labels = c("Government Effectivness", "Rule of Law", "Freedom House Index"))
+```
+
+
+```{r GDP Kazakhstan}
+
+Kazakhstan_GDP <- GDP %>%
+  filter(country %in% c("Kazakhstan")) 
+
+ggplot(Kazakhstan_GDP, aes(x = year, y = gdp, color = "red")) +
+  geom_point() +
+  geom_line() +
+  labs(
+    title = "Kazakhstan's Economic Climate",
+    x = "Year",
+    y = "GDP in USD",
+    caption = "Source: World Bank"
+  ) +
+  scale_x_continuous(breaks = c(1996, 1998, 2000, 2002, 2004, 2006, 2008, 2010, 2012, 2014, 2016, 2018)) +
+  guides(linetype = FALSE, color = FALSE) 
+```
+
+```{r Governance Tajikistan, warning=FALSE}
+
+Tajikistan_Gov <- Governance_Clean %>%
+  filter(country %in% c("Tajikistan")) %>%
+  filter(year >= 2002)
+
+
+ggplot(Tajikistan_Gov, aes(x = year, y = score, group = index)) +
+  geom_line(aes(linetype= "dash", color = index)) +
+  geom_point(aes(color = index)) +
+  labs(
+    color = "Index",
+    title = "Governance in Tajikistan",
+    x = "Year",
+    y = "Index Score"
+  ) +
+  expand_limits(y = 100, x = "2020") +
+  scale_x_discrete(breaks = c(2002, 2004, 2006, 2008, 2010, 2012, 2014, 2016, 2018, 2020)) +
+  scale_y_continuous(breaks = c(0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100)) +
+  guides(linetype = FALSE) +
+  scale_color_hue(labels = c("Government Effectivness", "Rule of Law", "Freedom House Index"))
+```
+
+
+```{r GDP Tajikistan}
+
+Tajikistan_GDP <- GDP %>%
+  filter(country %in% c("Tajikistan")) 
+
+ggplot(Tajikistan_GDP, aes(x = year, y = gdp, color = "red")) +
+  geom_point() +
+  geom_line() +
+  labs(
+    title = "Tajikistan's Economic Climate",
+    x = "Year",
+    y = "GDP in USD",
+    caption = "Source: World Bank"
   ) +
   scale_x_continuous(breaks = c(1996, 1998, 2000, 2002, 2004, 2006, 2008, 2010, 2012, 2014, 2016, 2018)) +
   guides(linetype = FALSE, color = FALSE) 
 ```
 
 
+```{r Governance Uzbekistan, warning=FALSE}
+
+Uzbekistan_Gov <- Governance_Clean %>%
+  filter(country %in% c("Uzbekistan")) %>%
+  filter(year >= 2002)
+
+
+ggplot(Uzbekistan_Gov, aes(x = year, y = score, group = index)) +
+  geom_line(aes(linetype= "dash", color = index)) +
+  geom_point(aes(color = index)) +
+  labs(
+    color = "Index",
+    title = "Governance in Uzbekistan",
+    x = "Year",
+    y = "Index Score"
+  ) +
+  expand_limits(y = 100, x = "2020") +
+  scale_x_discrete(breaks = c(2002, 2004, 2006, 2008, 2010, 2012, 2014, 2016, 2018, 2020)) +
+  scale_y_continuous(breaks = c(0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100)) +
+  guides(linetype = FALSE) +
+  scale_color_hue(labels = c("Government Effectivness", "Rule of Law", "Freedom House Index"))
+```
+
+
+```{r GDP Uzbekistan}
+
+Uzbekistan_GDP <- GDP %>%
+  filter(country %in% c("Uzbekistan")) 
+
+ggplot(Uzbekistan_GDP, aes(x = year, y = gdp, color = "red")) +
+  geom_point() +
+  geom_line() +
+  labs(
+    title = "Uzbekistan's Economic Climate",
+    x = "Year",
+    y = "GDP in USD",
+    caption = "Source: World Bank"
+  ) +
+  scale_x_continuous(breaks = c(1996, 1998, 2000, 2002, 2004, 2006, 2008, 2010, 2012, 2014, 2016, 2018)) +
+  guides(linetype = FALSE, color = FALSE) 
+```
+
+
+```{r Governance Ecuador, warning=FALSE}
+
+Ecuador_Gov <- Governance_Clean %>%
+  filter(country %in% c("Ecuador")) %>%
+  filter(year >= 2002)
+
+
+ggplot(Ecuador_Gov, aes(x = year, y = score, group = index)) +
+  geom_line(aes(linetype= "dash", color = index)) +
+  geom_point(aes(color = index)) +
+  labs(
+    color = "Index",
+    title = "Governance in Ecuador",
+    x = "Year",
+    y = "Index Score"
+  ) +
+  expand_limits(y = 100, x = "2020") +
+  scale_x_discrete(breaks = c(2002, 2004, 2006, 2008, 2010, 2012, 2014, 2016, 2018, 2020)) +
+  scale_y_continuous(breaks = c(0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100)) +
+  guides(linetype = FALSE) +
+  scale_color_hue(labels = c("Government Effectivness", "Rule of Law", "Freedom House Index"))
+```
+
+
+```{r GDP Ecuador}
+
+Ecuador_GDP <- GDP %>%
+  filter(country %in% c("Ecuador")) 
+
+ggplot(Ecuador_GDP, aes(x = year, y = gdp, color = "red")) +
+  geom_point() +
+  geom_line() +
+  labs(
+    title = "Ecuador's Economic Climate",
+    x = "Year",
+    y = "GDP in USD",
+    caption = "Source: World Bank"
+  ) +
+  scale_x_continuous(breaks = c(1996, 1998, 2000, 2002, 2004, 2006, 2008, 2010, 2012, 2014, 2016, 2018)) +
+  guides(linetype = FALSE, color = FALSE) 
+```

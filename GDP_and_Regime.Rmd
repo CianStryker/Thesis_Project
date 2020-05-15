@@ -6,7 +6,7 @@ output: html_document
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = FALSE)
 
 library(readxl)
 library(gt)
@@ -45,6 +45,29 @@ GDP<- GDP[c(1, 4, 2, 3)]
 
 ```
 
+```{r Regime, warning = FALSE}
+
+Freedom_House <- read_excel("Data/Freedom_House.xlsx")
+
+FH <- Freedom_House
+FH$year <- FH$Edition
+
+FH$country_name <- countrycode(FH$`Country/Territory`, "country.name", "country.name")
+
+FH$country_code = FH$country_name
+
+FH$country_code <- countrycode(FH$country_code, "country.name", "iso2c")
+
+FH <- FH[, -c(1,2, 3)]
+
+FH<- FH[c(3, 4, 2, 1)]
+
+FH_Clean <- FH %>%
+  drop_na() %>%
+  clean_names() %>%
+  filter(country_name %in% c("Ecuador", "Kazakhstan", "Kyrgyzstan", "Tajikistan", "Turkmenistan", "Uzbekistan"))
+
+```
 
 ```{r Map of Central Asia}
 
@@ -59,10 +82,7 @@ map.data <- Central_Asia %>%
 colnames(Central_Asia)[colnames(Central_Asia) == 'region'] <- 'country_name'
 
 Central_Asia$country_name <- countrycode(Central_Asia$country_name, "country.name", "country.name")
-
 ```
-
-
 
 ```{r GDP CA Map}
 GDP_2018 <- GDP %>%
@@ -71,9 +91,9 @@ GDP_2018 <- GDP %>%
 GDP_Map <- left_join(Central_Asia, GDP_2018, by = c("country_name"))
 ```
 
-```{r}
+```{r GDP CA Comparative Map}
 
-Map1 <- ggplot(GDP_Map, aes( x = long, y = lat, group = group )) +
+ggplot(GDP_Map, aes( x = long, y = lat, group = group )) +
   geom_polygon(aes(fill = gdp), color = "white") +
   guides(fill = guide_legend(reverse = T,)) +
   scale_fill_gradientn(limits = c(7e+09, 2e+11), colours =   
@@ -97,32 +117,6 @@ Map1 <- ggplot(GDP_Map, aes( x = long, y = lat, group = group )) +
         legend.background = element_rect(fill = '#CCCCCC'),
         legend.key = element_blank()
         ) 
-
-```
-
-
-```{r Regime, warning = FALSE}
-
-Freedom_House <- read_excel("Data/Freedom_House.xlsx")
-
-FH <- Freedom_House
-FH$year <- FH$Edition
-
-FH$country_name <- countrycode(FH$`Country/Territory`, "country.name", "country.name")
-
-FH$country_code = FH$country_name
-
-FH$country_code <- countrycode(FH$country_code, "country.name", "iso2c")
-
-FH <- FH[, -c(1,2, 3)]
-
-FH<- FH[c(3, 4, 2, 1)]
-
-FH_Clean <- FH %>%
-  drop_na() %>%
-  clean_names() %>%
-  filter(country_name %in% c("Ecuador", "Kazakhstan", "Kyrgyzstan", "Tajikistan", "Turkmenistan", "Uzbekistan"))
-
 ```
 
 
@@ -160,5 +154,43 @@ ggplot(Regime_Map, aes( x = long, y = lat, group = group )) +
 ```
 
 
+```{r GDP for All}
 
+GDP_All <- GDP %>%
+  filter(country_name %in% c("Ecuador", "Kazakhstan", "Kyrgyzstan", "Tajikistan", "Turkmenistan", "Uzbekistan"))
 
+ggplot(GDP_All, aes(x = year, y = gdp, group = country_name)) +
+  geom_line(aes(linetype= "dash", color = country_name)) +
+  geom_point(aes(color = country_name)) +
+  labs(
+    color = "Country",
+    title = "GDP for Central Asia and Ecuador",
+    subtitle = "1996-2018",
+    x = "Year",
+    y = "GDP in USD", 
+    caption = "Source: World Bank"
+  ) +
+  scale_x_discrete(breaks = c(1996, 1998, 2000, 2002, 2004, 2006, 2008, 2010, 2012, 2014, 2016, 2018, 2020)) +
+  guides(linetype = FALSE)
+```
+
+```{r Freedom House for All}
+
+FH_All <- FH_Clean %>%
+  filter(country_name %in% c("Ecuador", "Kazakhstan", "Kyrgyzstan", "Tajikistan", "Turkmenistan", "Uzbekistan"))
+
+ggplot(FH_All, aes(x = year, y = total, group = country_name)) +
+  geom_line(aes(linetype= "dash", color = country_name)) +
+  geom_point(aes(color = country_name)) +
+  labs(
+    color = "Country",
+    title = "Freedom House Scores for Central Asia and Ecuador",
+    subtitle = "2013-2020",
+    x = "Year",
+    y = "Index",
+    caption = "Source: Freedom House"
+  ) +
+  expand_limits(y = c(0, 100)) +
+  scale_x_discrete(breaks = c(2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020)) +
+  guides(linetype = FALSE)
+```
