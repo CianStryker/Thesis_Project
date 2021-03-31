@@ -13,6 +13,7 @@ library(gt)
 library(cowplot)
 library(png)
 library(scales)
+library(ggthemes)
 library(janitor)
 library(countrycode)
 library(tidyverse)
@@ -82,25 +83,26 @@ map.data <- Central_Asia %>%
 colnames(Central_Asia)[colnames(Central_Asia) == 'region'] <- 'country_name'
 
 Central_Asia$country_name <- countrycode(Central_Asia$country_name, "country.name", "country.name")
+
+
 ```
 
 ```{r GDP CA Map}
 GDP_2018 <- GDP %>%
   filter(year == 2018)
 
-GDP_Map <- left_join(Central_Asia, GDP_2018, by = c("country_name"))
+GDP_Map <- left_join(Central_Asia, GDP_2018, by = c("country_name")) 
+
+GDP_Map2 <- GDP_Map %>%
+  mutate(GDP = (gdp - mean(gdp))/sd(gdp))
 ```
 
 ```{r GDP CA Comparative Map}
 
-GDP_Map <- ggplot(GDP_Map, aes( x = long, y = lat, group = group )) +
-  geom_polygon(aes(fill = gdp), color = "white") +
+GDP_Map <- ggplot(GDP_Map2, aes( x = long, y = lat, group = group )) +
+  geom_polygon(aes(fill = GDP), color = "white") +
   guides(fill = guide_legend(reverse = T,)) +
-  scale_fill_gradientn(limits = c(7e+09, 2e+11), colours =   
-       c('#461863','#404E88','#2A8A8C','#7FD157','#F9E53F'),
-       values = rescale(c(7e+09, 8.e+09, 4.08e+10, 5.05e+10, 1.79e+11)),
-       labels = c("7.5e+09", "4.1e+10", "5.0e+10", "1.8e+11"),
-       breaks = c(7e+09, 4.08e+10, 5.05e+10, 1.79e+11)) +
+  scale_fill_continuous(type = "gradient", labels =  c("Low GDP", "High GDP"), breaks = c(-1,1)) +
   labs(fill = "GDP in USD",
        title = 'GDP in Central Asia: 2018',
        x = NULL,
@@ -133,7 +135,7 @@ Regime_Map <- left_join(Central_Asia, FH_2020, by = c("country_name"))
 FH_Map <- ggplot(Regime_Map, aes( x = long, y = lat, group = group )) +
   geom_polygon(aes(fill = total), color = "white") +
   guides(fill = guide_legend(reverse = TRUE)) +
-  scale_fill_viridis_c(option = "C", limits = c(0, 100), labels = c("Not Free", " ","Partially Free", " ",  "Free"), breaks = c(0, 25, 50, 75, 100)) +
+  scale_fill_continuous(limits = c(0, 39), labels = c("Not Free", "Partially Free"), breaks = c(0, 39)) +
   labs(fill = "Index",
        title = 'Freedom House Scores in Central Asia: 2020',
        x = NULL,
@@ -162,6 +164,7 @@ GDP_All <- GDP %>%
 GDP_Line_Graph <- ggplot(GDP_All, aes(x = year, y = gdp, group = country_name)) +
   geom_line(aes(linetype= "dash", color = country_name)) +
   geom_point(aes(color = country_name)) +
+  theme_hc() +
   labs(
     color = "Country",
     title = "GDP for Central Asia and Ecuador",
@@ -171,7 +174,8 @@ GDP_Line_Graph <- ggplot(GDP_All, aes(x = year, y = gdp, group = country_name)) 
     caption = "Source: World Bank"
   ) +
   scale_x_discrete(breaks = c(1996, 1998, 2000, 2002, 2004, 2006, 2008, 2010, 2012, 2014, 2016, 2018, 2020)) +
-  guides(linetype = FALSE)
+  guides(linetype = FALSE) +
+  theme(plot.caption = element_text(hjust = -.1))
 ```
 
 ```{r Freedom House for All}
@@ -182,6 +186,7 @@ FH_All <- FH_Clean %>%
 FH_Line_Graph <- ggplot(FH_All, aes(x = year, y = total, group = country_name)) +
   geom_line(aes(linetype= "dash", color = country_name)) +
   geom_point(aes(color = country_name)) +
+  theme_hc() +
   labs(
     color = "Country",
     title = "Freedom House Scores for Central Asia and Ecuador",
@@ -191,6 +196,7 @@ FH_Line_Graph <- ggplot(FH_All, aes(x = year, y = total, group = country_name)) 
     caption = "Source: Freedom House"
   ) +
   expand_limits(y = c(0, 100)) +
-  scale_x_discrete(breaks = c(2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020)) +
-  guides(linetype = FALSE)
+  scale_x_continuous(breaks = c(2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020)) +
+  guides(linetype = FALSE)+
+  theme(plot.caption = element_text(hjust = -.08))
 ```

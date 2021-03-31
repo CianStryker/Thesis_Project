@@ -12,6 +12,7 @@ library(readxl)
 library(gt)
 library(cowplot)
 library(janitor)
+library(ggthemes)
 library(png)
 library(countrycode)
 library(tidyverse)
@@ -132,10 +133,11 @@ CA_RoLx <- RoL %>%
 plot1 <- ggplot(CA_RoLx, aes(x = country, y = score,  fill = country)) +
   geom_col() +
   guides(fill = FALSE) +
+  theme_cowplot() +
   labs(
     color = "Country",
-    title = "Rule of Law: 2018",
-    subtitle = "Central Asia",
+    title = "Rule of Law",
+    subtitle = "Central Asia 2018",
     x = "Country",
     y = "Index Score",
     caption = " "
@@ -153,16 +155,17 @@ CA_Gov <- Gov %>%
 plot2 <- ggplot(CA_Gov, aes(x = country, y = score,  fill = country)) +
   geom_col() +
   guides(fill = FALSE) +
+  theme_cowplot() +
   labs(
     color = "Country",
-    title = "Government Effectivness: 2018",
-    subtitle = "Central Asia",
+    title = "Government Effectiveness",
+    subtitle = "Central Asia 2018",
     x = "Country",
     y = " ",
     caption = "Source: World Bank"
   ) +
   expand_limits(y = 100) +
-  theme(axis.text.x=element_text(angle = 60, hjust = 1))
+  theme(axis.text.x=element_text(angle = 60, hjust = 1), plot.caption = element_text(hjust = -.9))
 
 ``` 
 
@@ -181,10 +184,11 @@ RoL_All <- RoL %>%
 plot1x <- ggplot(RoL_All, aes(x = country, y = score,  fill = country)) +
   geom_col() +
   guides(fill = FALSE) +
+  theme_cowplot() +
   labs(
     color = "Country",
-    title = "Rule of Law: 2018",
-    subtitle = "Central Asia and Ecuador",
+    title = "Rule of Law",
+    subtitle = "Central Asia and Ecuador 2018",
     x = "Country",
     y = "Index Score",
     caption = " "
@@ -202,17 +206,17 @@ Gov_All <- Gov %>%
 plot2x <- ggplot(Gov_All, aes(x = country, y = score,  fill = country)) +
   geom_col() +
   guides(fill = FALSE) +
+  theme_cowplot() +
   labs(
     color = "Country",
-    title = "Government Effectivness: 2018",
-    subtitle = "Central Asia and Ecuador",
+    title = "Government Effectiveness",
+    subtitle = "Central Asia and Ecuador 2018",
     x = "Country",
     y = " ",
     caption = "Source: World Bank"
   ) +
   expand_limits(y = 100) +
-  theme(axis.text.x=element_text(angle = 60, hjust = 1))
-
+  theme(axis.text.x=element_text(angle = 60, hjust = 1), plot.caption = element_text(hjust = -.9))
 ``` 
 
 
@@ -249,6 +253,7 @@ Kyrgyzstan_Gov <- Governance_Clean %>%
 Gov_Kyrgyzstan <- ggplot(Kyrgyzstan_Gov, aes(x = year, y = score, group = index)) +
   geom_line(aes(linetype= "dash", color = index)) +
   geom_point(aes(color = index)) +
+  theme_economist_white() +
   labs(
     color = "Index",
     title = "Governance in Kyrgyzstan",
@@ -260,7 +265,8 @@ Gov_Kyrgyzstan <- ggplot(Kyrgyzstan_Gov, aes(x = year, y = score, group = index)
   scale_x_discrete(breaks = c(2002, 2004, 2006, 2008, 2010, 2012, 2014, 2016, 2018, 2020)) +
   scale_y_continuous(breaks = c(0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100)) +
   guides(linetype = FALSE) +
-  scale_color_hue(labels = c("Government Effectivness", "Rule of Law", "Freedom House Index"))
+  scale_color_hue(labels = c("Government Effectiveness", "Rule of Law", "Freedom House Index")) +
+  theme(axis.title.y = element_text(vjust = 4), axis.title.x = element_text(vjust = -4), plot.title = element_text(hjust = .45))
 ```
 
 
@@ -269,7 +275,7 @@ Gov_Kyrgyzstan <- ggplot(Kyrgyzstan_Gov, aes(x = year, y = score, group = index)
 Kyrgyzstan_GDP <- GDP %>%
   filter(country %in% c("Kyrgyzstan")) 
 
-GDP_Kyrgyzstan <-ggplot(Kyrgyzstan_GDP, aes(x = year, y = gdp, color = "red")) +
+GDP_Kyrgyzstan <- ggplot(Kyrgyzstan_GDP, aes(x = year, y = gdp, color = "red")) +
   geom_point() +
   geom_line() +
   labs(
@@ -279,7 +285,9 @@ GDP_Kyrgyzstan <-ggplot(Kyrgyzstan_GDP, aes(x = year, y = gdp, color = "red")) +
     caption = "Source: World Bank"
   ) +
   scale_x_continuous(breaks = c(1996, 1998, 2000, 2002, 2004, 2006, 2008, 2010, 2012, 2014, 2016, 2018)) +
-  guides(linetype = FALSE, color = FALSE) 
+  guides(linetype = FALSE, color = FALSE) +
+  theme_economist_white() +
+  theme(axis.title.y = element_text(vjust = 4), axis.title.x = element_text(vjust = -4), plot.title = element_text(hjust = .45, vjust = 3))
 ```
 
 ```{r Governance Kazakhstan, warning=FALSE}
@@ -303,7 +311,9 @@ Gov_Kazakhstan <-ggplot(Kazakhstan_Gov, aes(x = year, y = score, group = index))
   scale_x_discrete(breaks = c(2002, 2004, 2006, 2008, 2010, 2012, 2014, 2016, 2018, 2020)) +
   scale_y_continuous(breaks = c(0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100)) +
   guides(linetype = FALSE) +
-  scale_color_hue(labels = c("Government Effectivness", "Rule of Law", "Freedom House Index"))
+  scale_color_hue(labels = c("Government Effectiveness", "Rule of Law", "Freedom House Index")) +
+  theme_economist_white() +
+  theme(axis.title.y = element_text(vjust = 4), axis.title.x = element_text(vjust = -4), plot.title = element_text(hjust = .45))
 ```
 
 
@@ -322,7 +332,9 @@ GDP_Kazakhstan <- ggplot(Kazakhstan_GDP, aes(x = year, y = gdp, color = "red")) 
     caption = "Source: World Bank"
   ) +
   scale_x_continuous(breaks = c(1996, 1998, 2000, 2002, 2004, 2006, 2008, 2010, 2012, 2014, 2016, 2018)) +
-  guides(linetype = FALSE, color = FALSE) 
+  guides(linetype = FALSE, color = FALSE) +
+  theme_economist_white() +
+  theme(axis.title.y = element_text(vjust = 4), axis.title.x = element_text(vjust = -4), plot.title = element_text(hjust = .45, vjust = 3))
 ```
 
 ```{r Governance Tajikistan, warning=FALSE}
@@ -346,7 +358,9 @@ Gov_Tajikistan <-ggplot(Tajikistan_Gov, aes(x = year, y = score, group = index))
   scale_x_discrete(breaks = c(2002, 2004, 2006, 2008, 2010, 2012, 2014, 2016, 2018, 2020)) +
   scale_y_continuous(breaks = c(0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100)) +
   guides(linetype = FALSE) +
-  scale_color_hue(labels = c("Government Effectivness", "Rule of Law", "Freedom House Index"))
+  scale_color_hue(labels = c("Government Effectiveness", "Rule of Law", "Freedom House Index")) +
+  theme_economist_white() +
+  theme(axis.title.y = element_text(vjust = 4), axis.title.x = element_text(vjust = -4), plot.title = element_text(hjust = .45))
 ```
 
 
@@ -365,7 +379,9 @@ GDP_Tajikistan <- ggplot(Tajikistan_GDP, aes(x = year, y = gdp, color = "red")) 
     caption = "Source: World Bank"
   ) +
   scale_x_continuous(breaks = c(1996, 1998, 2000, 2002, 2004, 2006, 2008, 2010, 2012, 2014, 2016, 2018)) +
-  guides(linetype = FALSE, color = FALSE) 
+  guides(linetype = FALSE, color = FALSE) +
+  theme_economist_white() +
+  theme(axis.title.y = element_text(vjust = 4), axis.title.x = element_text(vjust = -4), plot.title = element_text(hjust = .45))
 ```
 
 
@@ -390,7 +406,9 @@ Gov_Uzbekistan <- ggplot(Uzbekistan_Gov, aes(x = year, y = score, group = index)
   scale_x_discrete(breaks = c(2002, 2004, 2006, 2008, 2010, 2012, 2014, 2016, 2018, 2020)) +
   scale_y_continuous(breaks = c(0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100)) +
   guides(linetype = FALSE) +
-  scale_color_hue(labels = c("Government Effectivness", "Rule of Law", "Freedom House Index"))
+  scale_color_hue(labels = c("Government Effectiveness", "Rule of Law", "Freedom House Index"))+
+  theme_economist_white() +
+  theme(axis.title.y = element_text(vjust = 4), axis.title.x = element_text(vjust = -4), plot.title = element_text(hjust = .45))
 ```
 
 
@@ -409,7 +427,9 @@ GDP_Uzbekistan <- ggplot(Uzbekistan_GDP, aes(x = year, y = gdp, color = "red")) 
     caption = "Source: World Bank"
   ) +
   scale_x_continuous(breaks = c(1996, 1998, 2000, 2002, 2004, 2006, 2008, 2010, 2012, 2014, 2016, 2018)) +
-  guides(linetype = FALSE, color = FALSE) 
+  guides(linetype = FALSE, color = FALSE) +
+  theme_economist_white() +
+  theme(axis.title.y = element_text(vjust = 4), axis.title.x = element_text(vjust = -4), plot.title = element_text(hjust = .45, vjust = 3))
 ```
 
 
@@ -434,7 +454,9 @@ Gov_Ecuador <- ggplot(Ecuador_Gov, aes(x = year, y = score, group = index)) +
   scale_x_discrete(breaks = c(2002, 2004, 2006, 2008, 2010, 2012, 2014, 2016, 2018, 2020)) +
   scale_y_continuous(breaks = c(0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100)) +
   guides(linetype = FALSE) +
-  scale_color_hue(labels = c("Government Effectivness", "Rule of Law", "Freedom House Index"))
+  scale_color_hue(labels = c("Government Effectiveness", "Rule of Law", "Freedom House Index"))+
+  theme_economist_white() +
+  theme(axis.title.y = element_text(vjust = 4), axis.title.x = element_text(vjust = -4), plot.title = element_text(hjust = .45))
 ```
 
 
@@ -453,5 +475,7 @@ GDP_Ecuador <- ggplot(Ecuador_GDP, aes(x = year, y = gdp, color = "red")) +
     caption = "Source: World Bank"
   ) +
   scale_x_continuous(breaks = c(1996, 1998, 2000, 2002, 2004, 2006, 2008, 2010, 2012, 2014, 2016, 2018)) +
-  guides(linetype = FALSE, color = FALSE) 
+  guides(linetype = FALSE, color = FALSE) +
+  theme_economist_white() +
+  theme(axis.title.y = element_text(vjust = 4), axis.title.x = element_text(vjust = -4), plot.title = element_text(hjust = .45, vjust = 3))
 ```
