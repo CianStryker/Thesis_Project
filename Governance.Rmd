@@ -165,7 +165,7 @@ plot2 <- ggplot(CA_Gov, aes(x = country, y = score,  fill = country)) +
     caption = "Source: World Bank"
   ) +
   expand_limits(y = 100) +
-  theme(axis.text.x=element_text(angle = 60, hjust = 1), plot.caption = element_text(hjust = -.9))
+  theme(axis.text.x=element_text(angle = 60, hjust = 1))
 
 ``` 
 
@@ -216,7 +216,7 @@ plot2x <- ggplot(Gov_All, aes(x = country, y = score,  fill = country)) +
     caption = "Source: World Bank"
   ) +
   expand_limits(y = 100) +
-  theme(axis.text.x=element_text(angle = 60, hjust = 1), plot.caption = element_text(hjust = -.9))
+  theme(axis.text.x=element_text(angle = 60, hjust = 1))
 ``` 
 
 

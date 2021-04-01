@@ -164,18 +164,17 @@ GDP_All <- GDP %>%
 GDP_Line_Graph <- ggplot(GDP_All, aes(x = year, y = gdp, group = country_name)) +
   geom_line(aes(linetype= "dash", color = country_name)) +
   geom_point(aes(color = country_name)) +
-  theme_hc() +
+  theme_economist_white() +
   labs(
     color = "Country",
     title = "GDP for Central Asia and Ecuador",
-    subtitle = "1996-2018",
     x = "Year",
     y = "GDP in USD", 
     caption = "Source: World Bank"
   ) +
   scale_x_discrete(breaks = c(1996, 1998, 2000, 2002, 2004, 2006, 2008, 2010, 2012, 2014, 2016, 2018, 2020)) +
   guides(linetype = FALSE) +
-  theme(plot.caption = element_text(hjust = -.1))
+  theme(axis.title.y = element_text(vjust = 4), axis.title.x = element_text(vjust = -4), plot.title = element_text(hjust = .45, vjust = 3))
 ```
 
 ```{r Freedom House for All}
@@ -186,17 +185,16 @@ FH_All <- FH_Clean %>%
 FH_Line_Graph <- ggplot(FH_All, aes(x = year, y = total, group = country_name)) +
   geom_line(aes(linetype= "dash", color = country_name)) +
   geom_point(aes(color = country_name)) +
-  theme_hc() +
+  theme_economist_white() +
   labs(
     color = "Country",
     title = "Freedom House Scores for Central Asia and Ecuador",
-    subtitle = "2013-2020",
     x = "Year",
-    y = "Index",
+    y = "Freedom Index",
     caption = "Source: Freedom House"
   ) +
   expand_limits(y = c(0, 100)) +
   scale_x_continuous(breaks = c(2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020)) +
   guides(linetype = FALSE)+
-  theme(plot.caption = element_text(hjust = -.08))
+  theme(axis.title.y = element_text(vjust = 4), axis.title.x = element_text(vjust = -4), plot.title = element_text(hjust = .45, vjust = 3))
 ```
